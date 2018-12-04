@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="605.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainViewController">
+   <children>
+      <StackPane layoutY="25.0" prefHeight="596.0" prefWidth="919.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <children>
+          <StackPane>
+            <children>
+              <VBox prefHeight="576.0" prefWidth="1073.0" spacing="10.0">
+                <children>
+                  <GridPane prefHeight="57.0" prefWidth="899.0">
+                    <children>
+                      <Label text="Session ID:" />
+                      <Label fx:id="sessionLabel" text="Undefined" GridPane.columnIndex="1" />
+                      <Button id="loginButton" fx:id="logoutButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Logout" GridPane.rowIndex="1" />
+                        <StackPane prefHeight="-1.0" prefWidth="-1.0" />
+                    </children>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="109.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+                        <HBox prefHeight="489.0" prefWidth="1081.0">
+                           <children>
+                              <ScrollPane prefHeight="489.0" prefWidth="711.0">
+                                 <content>
+                                    <AnchorPane fx:id="drawPane" />
+                                 </content>
+                              </ScrollPane>
+                              <GridPane prefHeight="487.0" prefWidth="115.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="326.0" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="326.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="422.0" minHeight="10.0" prefHeight="372.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="rotateButton" mnemonicParsing="false" text="Rotate" />
+                                    <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="1" />
+                                    <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="2" />
+                                    <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="3" />
+                                    <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="4" />
+                                 </children>
+                              </GridPane>
+                              <TableView fx:id="strokeTable" editable="true" prefHeight="489.0" prefWidth="397.0">
+                                <columns>
+                                  <TableColumn fx:id="strokeColumn" prefWidth="75.0" text="Stroke">
+                                  	<cellValueFactory>
+								    	<PropertyValueFactory property="strokeIndex" />
+								    </cellValueFactory>
+                                  </TableColumn>
+                                  <TableColumn fx:id="labelColumn" prefWidth="115.0" text="Label">
+                                  <cellValueFactory>
+								    	<PropertyValueFactory property="strokeLabel" />
+								    </cellValueFactory>
+                                  </TableColumn>
+                                    <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Time">
+                                    <cellValueFactory>
+								    	<PropertyValueFactory property="strokeDuration" />
+								    </cellValueFactory>
+                                  </TableColumn>
+                                    <TableColumn fx:id="distanceColumn" prefWidth="75.0" text="Distance">
+                                    <cellValueFactory>
+								    	<PropertyValueFactory property="strokeDistance" />
+								    </cellValueFactory>
+                                  </TableColumn>
+                                </columns>
+                              </TableView>
+                           </children>
+                        </HBox>
+                </children>
+              </VBox>
+            </children>
+          </StackPane>
+        </children>
+        <padding>
+          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
+      </StackPane>
+      <MenuBar fx:id="fileMenuBar" prefHeight="25.0" prefWidth="919.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#pickAFile" text="Open" />
+                  <MenuItem mnemonicParsing="false" onAction="#closeApp" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
