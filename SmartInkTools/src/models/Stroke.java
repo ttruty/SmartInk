@@ -23,6 +23,10 @@ public abstract class Stroke
     public abstract long getEndOfStroke();
 
     public abstract TreeSet<Point> getPointsSet();
+    
+    public abstract Point getFirstPoint();
+
+    public abstract Point getLastPoint();
 
     public abstract double getStrokeDuration();
 
@@ -33,4 +37,6 @@ public abstract class Stroke
     public abstract boolean isHighlighted();
 
     public abstract void setHighlighted(boolean paramBoolean);
+    
+    public abstract void setStrokeCluster(int strokeCluster);
 }

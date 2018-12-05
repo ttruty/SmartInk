@@ -63,7 +63,7 @@
                                 </rowConstraints>
                                  <children>
                                     <Button fx:id="rotateButton" mnemonicParsing="false" text="Rotate" />
-                                    <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="1" />
+                                    <Button fx:id="clusterButton" mnemonicParsing="false" text="Cluster" GridPane.rowIndex="1" />
                                     <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="2" />
                                     <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="3" />
                                     <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="4" />

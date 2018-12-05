@@ -19,6 +19,13 @@ public class InkStroke
 
   //var for selected strokes
   private boolean highlight;
+
+  /*initial stroke cluster counter to -1 
+   * as this means nothing clustered, 
+  0 = unclustered group
+  1+ = cluster groups
+  */
+  private int strokeCluster = -1;
   
   //add all points set to stroke
   public InkStroke(Collection<Point> points) {
@@ -139,5 +146,12 @@ public class InkStroke
   public void setHighlighted(boolean highlightArg) {
     highlight = highlightArg;
   }
+  
+  public int getStrokeCluster() {
+	    return strokeCluster;
+	  }
 
+	  public void setStrokeCluster(int strokeCluster) {
+	    this.strokeCluster = strokeCluster;
+	  }
 }

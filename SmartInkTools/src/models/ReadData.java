@@ -13,17 +13,9 @@ import java.util.regex.Pattern;
 
 public class ReadData {
     public static  String PenSerialNumber = "";
-    
-    
-    // min and max vars for set view frame
-    private double minX;
-    private double minY;
-    private double maxX;
-    private double maxY;
-    
+        
     static String pattern = "\\d+\\.\\d+\\s\\d+\\.\\d+\\s\\d+\\s\\d+";
 
-    
     public ReadData() {}
     
 
@@ -90,8 +82,6 @@ public class ReadData {
         int strokeCounter = 1;
         boolean strokeIDEndsPoints = false;
         
-        
-        
         try {
         	//tokenize the lines
             for (String line = penFile.readLine(); line != null; line = penFile.readLine()) {
@@ -131,8 +121,7 @@ public class ReadData {
                     }
 
                     // if the line starts with the Stroke ID:
-                    else if ((lineTokens.size() == 2) && (isInteger((String)lineTokens.get(1))) &&
-                            (((String)lineTokens.get(0)).endsWith("StrokeID:")))
+                    else if (lineTokens.get(0).endsWith("StrokeID:"))
                     {
                         if (!strokeIDEndsPoints)
                         {
@@ -203,43 +192,4 @@ public class ReadData {
         }
         return strokes;
     }
-    
-    private static boolean isDouble(String s)
-    {
-        try
-        {
-            Double.parseDouble(s);
-            return true;
-        }
-        catch (NumberFormatException localNumberFormatException) {}
-
-        return false;
-    }
-
-
-    public static double convertFromAnotoUnit(double auNum)
-    {
-        return auNum * 0.3D;
-    }
-
-
-    private static String removeTimeFormatting(String s)
-    {
-        String numbers = s.replaceAll(",", "");
-        numbers = numbers.replaceAll("\"", "");
-        return numbers;
-    }
-
-    private static boolean isInteger(String s)
-    {
-        try
-        {
-            Integer.parseInt(s);
-            return true;
-        }
-        catch (NumberFormatException localNumberFormatException) {}
-
-        return false;
-    }
-
 }
