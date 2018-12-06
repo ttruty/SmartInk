@@ -5,8 +5,8 @@ import java.util.Vector;
 
 public class DBScan
 {
-    public static double e= 15; //min distance
-    public static int minpt =2; //min number of points
+    public static double minDist= 15; //min distance
+    public static int minPt =2; //min number of points
     
     Cluster cluster = new Cluster();
 
@@ -35,7 +35,7 @@ public class DBScan
                 Neighbours =Cluster.getNeighbours(p);
 
 
-                if (Neighbours.size()>=minpt){
+                if (Neighbours.size()>=minPt){
 
 
                     int ind=0;
@@ -45,13 +45,13 @@ public class DBScan
                         if(!Cluster.isVisited(r)){
                             Cluster.Visited(r);
                             Vector<Point> Neighbours2 = Cluster.getNeighbours(r);
-                            if (Neighbours2.size() >= minpt){
+                            if (Neighbours2.size() >= minPt){
                                 Neighbours=Cluster.Merge(Neighbours, Neighbours2);
                             }
                         } ind++;
                     }
 
-                    System.out.println("N"+Neighbours.size());
+                    //System.out.println("N"+Neighbours.size());
                     resultList.add(Neighbours);}
 
 

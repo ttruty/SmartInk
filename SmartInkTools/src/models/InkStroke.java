@@ -42,7 +42,7 @@ public class InkStroke
   public int getIndexNumber() {
 	    return indexNumber;
   }
-
+  
   public void setIndexNumber(int strokeNumber) {
     if (!indexNumberSet) {
       indexNumber = strokeNumber;
@@ -50,23 +50,23 @@ public class InkStroke
     }
   }
 
-	  
+  @Override
   public void setLabel(String labelIn) {
     label = labelIn;
   }
 
-
+  @Override
   public String getLabel() {
     return label;
   }
 
-
+  @Override
   public long getStartOfStroke() {
     Point startingPoint = (Point) pointsSet.first();
     return startingPoint.getTimeStamp();
   }
 
-
+  @Override
   public long getEndOfStroke() {
     Point endingPoint = (Point) pointsSet.last();
     return endingPoint.getTimeStamp();
@@ -78,12 +78,12 @@ public class InkStroke
     return (getEndOfStroke() - getStartOfStroke()) / 1000.0D;
   }
   
-  //TODO get time inbetween strokes... 
+  //TODO get time inbetween strokes...
   public int getNumberOfPoints() {
     return pointsSet.size();
   }
 
-
+  @Override
   public double getLength() {
 	  // get the length of ink stroke
 	  if (pointsSet.size() > 1) {
@@ -107,7 +107,7 @@ public class InkStroke
 	    return 0.0D;
 	  }
 
-
+  @Override
   public double getDistance() {
 	  //get distance from starting point to ending point 
 	  // example an "0" would be close to zero,
@@ -120,38 +120,50 @@ public class InkStroke
   }
 
 
+  @Override
   public Point getFirstPoint() {
     return (Point) pointsSet.first();
   }
 
 
+  @Override
   public Point getLastPoint() {
     return (Point) pointsSet.last();
   }
 
 
+  @Override
   public String toString() {
     return "Label: " + getLabel() + " ----- Sample count: " + pointsSet.size();
   }
 
+  @Override
   public TreeSet<Point> getPointsSet() {
     return pointsSet;
   }
   
 
+  @Override
   public boolean isHighlighted() {
     return highlight;
   }
 
+  @Override
   public void setHighlighted(boolean highlightArg) {
     highlight = highlightArg;
   }
   
-  public int getStrokeCluster() {
-	    return strokeCluster;
-	  }
-
+	  @Override
 	  public void setStrokeCluster(int strokeCluster) {
 	    this.strokeCluster = strokeCluster;
 	  }
+
+	@Override
+	public int getStrokCluster() {
+		return strokeCluster;
+		// TODO Auto-generated method stub
+		
+	}
+  
+  
 }

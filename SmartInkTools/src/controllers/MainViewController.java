@@ -1,7 +1,5 @@
 package controllers;
 
-import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
@@ -11,36 +9,36 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.Vector;
-
-import javax.swing.JButton;
-
 import javafx.application.Platform;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.Cluster;
+import models.ClusterTableData;
 import models.DBScan;
 import models.FileDetails;
 import models.Point;
@@ -65,6 +63,20 @@ public class MainViewController {
   @FXML private TableColumn<StrokeTableData, String> labelColumn;
   @FXML private TableColumn<StrokeTableData, String> timeColumn;
   @FXML private TableColumn<StrokeTableData, String> distanceColumn;
+  
+  @FXML private TableView<ClusterTableData> clusterTable;
+  @FXML private TableColumn<ClusterTableData, String> clusterIndexColumn;
+  @FXML private TableColumn<ClusterTableData, String> clusterLabelColumn;
+  @FXML private TableColumn<ClusterTableData, String> clusterCountColumn;
+  
+  @FXML private Slider clusterDistSlider;
+  @FXML private Slider clusterNeighborSlider;
+  
+  @FXML private Label clusterDistLabel;
+  @FXML private Label clusterMinNeighborLabel;
+  
+  @FXML private Tab strokeTab;
+  @FXML private Tab clusterTab;
 
   private ObservableList<String> labelPicker;
   
@@ -72,14 +84,15 @@ public class MainViewController {
 
   private static File loadFile;
   private int strokeCount;
+  private int clusterCount;
   private double rotationDegs = 90.0;
   
   private Stroke currentHighlight;
   
-  private Group clusterGroup = new Group();
-  
-  private Property<StrokeTableData> listenedName;
-  private ChangeListener<StrokeTableData> nameListener;
+  private Property<StrokeTableData> stokeProperty;
+  private Property<ClusterTableData> clusterProperty;
+  private ChangeListener<StrokeTableData> strokeListener;
+  private ChangeListener<ClusterTableData> clusterListener;
   private Stroke highlightedStroke;
 
 
@@ -103,23 +116,84 @@ public class MainViewController {
  			}); // end rotate
      
     
-     clusterButton.setOnAction((e) -> {  	
+     Group clusterGroup = new Group();
+     clusterButton.setOnAction((e) -> {  
+    	 AnchorPane p = new AnchorPane();
+    	 clusterTable.getItems().clear();
+ 		 clusterTable.refresh();
+    	 System.out.println("CLUSTER GROUP: " + clusterGroup.getChildren().size());
+    	 p.getChildren().removeAll(clusterGroup);
+    	 clusterGroup.getChildren().clear();
+    	 
     	 Cluster.clearData(); //clear the bounding box list
     	 Cluster.clusterData(this.getFinalStrokeData());
     	 
     	 //remove the rectangles in the drawpane with each press to redraw
-    	 Node drawNode = (Node) drawPane.getChildren().get(0);
-    	 if (drawNode instanceof Rectangle)
-    	 {
-    		 drawPane.getChildren().remove(drawNode);
-    	 }
+    	 //Node drawNode = (Node) p.getChildren().get(0);
+    	 //if (drawNode instanceof Rectangle)
+    	 //{
+    	//	 p.getChildren().remove(drawNode);
+    	// }
     	 //reset a pane to be able to press button again on frame
     	 ArrayList<Rectangle> clusterBoxes = Cluster.boundClusterBox();
+    	 
     	 for (Rectangle rect : clusterBoxes) {   		 
     		 rect.setStroke(Color.RED);
     		 rect.setFill(Color.TRANSPARENT);
     		 clusterGroup.getChildren().add(rect);
-    		 drawPane.getChildren().add(rect);    
+    		 
+         }
+    	 
+    	 p.getChildren().add(clusterGroup);  
+    	 drawPane.getChildren().add(p);
+    	 
+    	 populateClusterTableView(this.getFinalStrokeData());
+    	 //showSelection(this.getFinalStrokeData());
+     });
+     
+     //Sliders for cluster variables
+     clusterDistSlider.valueProperty().addListener(new ChangeListener<Number>() {
+         @Override
+         public void changed(ObservableValue<? extends Number> arg0,Number arg1, Number arg2) {
+             clusterDistLabel.textProperty().setValue("Min Dist: " + String.valueOf((int) clusterDistSlider.getValue()));
+             DBScan.minDist = (int) clusterDistSlider.getValue();
+             }
+     });
+     
+     clusterNeighborSlider.valueProperty().addListener(new ChangeListener<Number>() {
+         @Override
+         public void changed(ObservableValue<? extends Number> arg0,Number arg1, Number arg2) {
+        	 clusterMinNeighborLabel.textProperty().setValue("Min Neighbs: " + String.valueOf((int) clusterNeighborSlider.getValue()));
+        	 DBScan.minPt = (int) clusterNeighborSlider.getValue();
+             }
+     });
+     
+     // select stroke tab
+     strokeTab.setOnSelectionChanged(new EventHandler<Event>() {
+         @Override
+         public void handle(Event t) {
+             if (strokeTab.isSelected()) {
+            	 
+         		//add listeners		
+             	stopListeningToSelect(); // stop listener to ensure not more than one on obj
+             	strokeTable.getSelectionModel().clearSelection();
+             	clusterTable.getSelectionModel().clearSelection();
+             	startListeningToTableSelect(stokeProperty, strokeTable);
+             }
+         }
+     });
+     
+     //select cluster tab
+     clusterTab.setOnSelectionChanged(new EventHandler<Event>() {
+         @Override
+         public void handle(Event t) {
+             if (clusterTab.isSelected()) {
+         		//add listeners		
+             	stopListeningToSelect(); // stop listener to ensure not more than one on obj
+             	strokeTable.getSelectionModel().clearSelection();
+             	clusterTable.getSelectionModel().clearSelection();
+             	startListeningToClusterSelect(clusterProperty, clusterTable);
+             }
          }
      });
   }
@@ -212,7 +286,6 @@ public class MainViewController {
                 yPointList.add(pointCount, value.getY());
                 yMaxMinList.add(value.getY());
                 pointCount++;
-
             }
             
             for (int p = 0; p < xPointList.size() - 1; p++) {
@@ -263,90 +336,188 @@ public class MainViewController {
 			    SelectionMode.MULTIPLE
 			);
 		labelColumn.setCellFactory(ComboBoxTableCell.forTableColumn(labelPicker)); 
+	}
+	
+	public void populateClusterTableView(LinkedList<Stroke> data) {
+		//clear the table each run
+		//stopListeningToSelect();
+		clusterTable.getItems().clear();
+		clusterTable.refresh();
 		
-		//add listerers
-		showSelection(data);
+		labelPicker = FXCollections.observableArrayList();
 		
+		//set up combo box to set label
+		labelPicker.add("Sentence");
+		labelPicker.add("Pentagon");
+		labelPicker.add("RA Data");
+		labelPicker.add("Other Data");
+			
+		clusterCount = 0;
+		// reset to null
+		ObservableList<ClusterTableData> clusterList = null;
 		
+		clusterList = FXCollections.observableArrayList();
+		
+		for (Stroke s : data)
+		{	
+			clusterCount++;
+			//round the distance to 2 places
+			//double distance = new BigDecimal(s.getDistance()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+			clusterList.add(new ClusterTableData(s.getLabel().toString(), "<Click to set>", Integer.toString(s.getStrokCluster() ) ) );
+		}
+		clusterTable.setItems(clusterList);
+		
+		clusterTable.getSelectionModel().setSelectionMode( //set the table to allow multiple selections
+			    SelectionMode.MULTIPLE
+			);
+		labelColumn.setCellFactory(ComboBoxTableCell.forTableColumn(labelPicker)); 
+		
+		//add listeners		
+//		stopListeningToSelect(); // stop listener to ensure not more than one on obj
+//    	strokeTable.getSelectionModel().clearSelection();
+//    	clusterTable.getSelectionModel().clearSelection();    	
+//    	startListeningToClusterSelect(clusterProperty, clusterTable);
 	}
 	
 	// this is used to listen to table clicks
     public void showSelection(LinkedList<Stroke> data){  
     	//need to stop listener first so if a new tableview is loaded it will not hav
     	// multiple listenres
-    	stopListeningToNameChanges();
-    	strokeTable.getSelectionModel().clearSelection();
-    	startListeningToNameChanges(listenedName);
+    	stopListeningToSelect();
+    	//strokeTable.getSelectionModel().clearSelection();
+    	startListeningToTableSelect(stokeProperty, clusterTable);
 
     }
-    private void startListeningToNameChanges(Property<StrokeTableData> name) {
-    	listenedName = name;
-    	nameListener = (obs, oldValue, newValue) -> {
-    		if (newValue != null) {
-    		
-    			//remove the lines in the drawpane with each press to redraw
-    	    	 Node drawNode = (Node) drawPane.getChildren().get(0);
-    	    	 if (drawNode instanceof Line)
-    	    	 {    	  
-    	    		 System.out.println("Removing lists " + drawNode.toString());
-    	    		 drawPane.getChildren().remove(drawNode);
-    	    	 }
+    
+    //listern method to make selection
+    private void startListeningToTableSelect(Property<?> name, TableView<?> table) {
+    	// THIS TOOK SOME SERIOUS DEBUGGING
+    	// STILL NOT SURE IT IS THE CORRECT WAY TO GO ABOUT HIGHLIGHTING
+    	// BUT IT WORKS AND DOES NOT HAVE THE SERIOUS LAG FROM BEFORE
+    	stopListeningToSelect();
+    	//stokeProperty = name;
+    	strokeListener = (obs, oldValue, newValue) -> {        	
+    		if (newValue != null) {        			
+    			Group redLineGroup = new Group();
+    	    	Group blueLineGroup = new Group();
     			
-    			int rowSelected =  strokeTable.getSelectionModel().getSelectedIndex();
-    			System.out.println("ROW SELECTED:" + rowSelected);
+    			int rowSelected =  table.getSelectionModel().getSelectedIndex();
+    			//System.out.println("ROW SELECTED:" + rowSelected);
     			LinkedList<Stroke> data = this.getFinalStrokeData();
     			System.out.println(data.get(rowSelected).toString());
     			data.get(rowSelected).setHighlighted(true);
     			
     			
     			//clear stroke data from pane
-    			for (Stroke stroke : data) {
-    	        	
+    			for (Stroke stroke : data) {         	
     				
     				if (stroke.isHighlighted()) {
     					
     					ArrayList<Line> strokeLines = drawStrokeLine(stroke);
 	                    for (Line line : strokeLines)
 	                	{
+	                    	//drawPane.getChildren().remove(line);
 	                		line.setStroke(Color.RED);
-	                		//line.setStrokeWidth(2);
-	                		drawPane.getChildren().add(line);
+	                		line.setStrokeWidth(4);
+	                		redLineGroup.getChildren().add(line);               		
 	                	}
+	                    if (!strokeLines.isEmpty()) {
+	                    	drawPane.getChildren().remove(redLineGroup);
+	                    	drawPane.getChildren().add(redLineGroup);
+	                    }
     				}
     				else {
     					ArrayList<Line> returnStrokes = drawStrokeLine(stroke);
     					for (Line l : returnStrokes)
     	        		{
+	                    	//drawPane.getChildren().remove(l);
+
+    						//drawPane.getChildren().remove(l);
     	        			l.setStroke(Color.BLUE);
-    	        			drawPane.getChildren().add(l);
-    	        		}    					
+    	        			blueLineGroup.getChildren().add(l);  	        			           		
+    	        		}
+    					if (!returnStrokes.isEmpty()) {
+    						drawPane.getChildren().remove(blueLineGroup);
+    						drawPane.getChildren().add(blueLineGroup);	
+    					}
     				}
-//    	        	if (stroke.equals(currentHighlight))
-//    	        	{
-//    	        		System.out.println("Remove highlight from " + stroke.toString());
-    	        		
-    	        		
-//    	        		
-//    	        		
-//    	        	}
                     stroke.setHighlighted(false);
                     highlightedStroke =  data.get(rowSelected);
                     currentHighlight = highlightedStroke;
-                    
-                    
     			}
     		}
-    	};
-    	strokeTable.getSelectionModel().selectedItemProperty().addListener(nameListener);
+    	};    	
+    	strokeTable.getSelectionModel().selectedItemProperty().addListener(strokeListener);
+    }
+    
+    //listern method to make selection
+    private void startListeningToClusterSelect(Property<?> name, TableView<?> table) {
+    	// THIS TOOK SOME SERIOUS DEBUGGING
+    	// STILL NOT SURE IT IS THE CORRECT WAY TO GO ABOUT HIGHLIGHTING
+    	// BUT IT WORKS AND DOES NOT HAVE THE SERIOUS LAG FROM BEFORE
+    	stopListeningToSelect();
+    	//stokeProperty = name;
+    	clusterListener = (obs, oldValue, newValue) -> {        	
+    		if (newValue != null) {        			
+    			Group redLineGroup = new Group();
+    	    	Group blueLineGroup = new Group();
+    			drawPane.getChildren().clear(); // this clears out the pane- even the cluster
+    		    			
+    			int rowSelected =  table.getSelectionModel().getSelectedIndex();
+    			//System.out.println("ROW SELECTED:" + rowSelected);
+    			LinkedList<Stroke> data = this.getFinalStrokeData();
+    			System.out.println(data.get(rowSelected).toString());
+    			data.get(rowSelected).setHighlighted(true);
+    			
+    			
+    			//clear stroke data from pane
+    			for (Stroke stroke : data) {         	
+    				
+    				if (stroke.isHighlighted()) {
+    					
+    					ArrayList<Line> strokeLines = drawStrokeLine(stroke);
+	                    for (Line line : strokeLines)
+	                	{
+	                    	//drawPane.getChildren().remove(line);
+	                		line.setStroke(Color.RED);
+	                		line.setStrokeWidth(4);
+	                		redLineGroup.getChildren().add(line);               		
+	                	}
+	                    if (!strokeLines.isEmpty()) {
+	                    	drawPane.getChildren().remove(redLineGroup);
+	                    	drawPane.getChildren().add(redLineGroup);
+	                    }
+    				}
+    				else {
+    					ArrayList<Line> returnStrokes = drawStrokeLine(stroke);
+    					for (Line l : returnStrokes)
+    	        		{
+	                    	//drawPane.getChildren().remove(l);
+
+    						//drawPane.getChildren().remove(l);
+    	        			l.setStroke(Color.BLUE);
+    	        			blueLineGroup.getChildren().add(l);  	        			           		
+    	        		}
+    					if (!returnStrokes.isEmpty()) {
+    						drawPane.getChildren().remove(blueLineGroup);
+    						drawPane.getChildren().add(blueLineGroup);	
+    					}
+    				}
+                    stroke.setHighlighted(false);
+                    highlightedStroke =  data.get(rowSelected);
+                    currentHighlight = highlightedStroke;
+    			}
+    		}
+    	};    	
+    	clusterTable.getSelectionModel().selectedItemProperty().addListener(clusterListener);
     }
 
-       
-	        //System.out.println(data.get(rowSelected).toString());
-//    	
-
-    private void stopListeningToNameChanges() {
-    	if (nameListener != null) {
-    		strokeTable.getSelectionModel().selectedItemProperty().removeListener(nameListener);
+    private void stopListeningToSelect() {
+    	if (clusterListener != null) {
+    		clusterTable.getSelectionModel().selectedItemProperty().removeListener(clusterListener);
+    	}
+    	if (strokeListener != null) {
+    		strokeTable.getSelectionModel().selectedItemProperty().removeListener(strokeListener);
     	}
     }
 

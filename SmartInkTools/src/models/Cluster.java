@@ -14,9 +14,7 @@ public class Cluster {
 	  //clustering lists variables
 	  static Vector<Point> VisitList = new Vector<Point>();
 	  static Vector<Point> hset = new Vector<Point>();
-	  static Vector<List> trl = new Vector<List>();
-	  
-
+	  public static Vector<List> trl = new Vector<List>(); //list of points in cluster
 	  
 	  // bounding box display of clustering
 	  private static ArrayList<Rectangle> DBBoxList = new ArrayList<>();
@@ -31,7 +29,7 @@ public class Cluster {
 	      }
 	      
 	      trl.addAll(DBScan.applyDbscan());
-	      System.out.println("CLUSTER DATA: " + DBScan.resultList.size());
+	      //System.out.println("CLUSTER DATA: " + DBScan.resultList.size());
 	      for (int i = 0; i < data.size(); i++) {
 	          for (int j = 0; j < DBScan.resultList.size(); j++)
 	          {
@@ -117,7 +115,7 @@ public class Cluster {
 	        Iterator<Point> points = DBScan.pointList.iterator();
 	        while(points.hasNext()){
 	            Point q = points.next();
-	            if(getDistance(p,q)<= DBScan.e){
+	            if(getDistance(p,q)<= DBScan.minDist){
 	                neigh.add(q);
 	            }
 	        }

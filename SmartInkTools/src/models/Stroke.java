@@ -39,4 +39,6 @@ public abstract class Stroke
     public abstract void setHighlighted(boolean paramBoolean);
     
     public abstract void setStrokeCluster(int strokeCluster);
+    
+    public abstract int getStrokCluster();
 }
