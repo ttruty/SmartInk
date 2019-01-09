@@ -170,4 +170,6 @@ public class Cluster {
 		public static void clearData() {
 			DBBoxList.clear();		
 		}
+		
+		
 }

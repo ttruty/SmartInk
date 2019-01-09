@@ -41,4 +41,6 @@ public abstract class Stroke
     public abstract void setStrokeCluster(int strokeCluster);
     
     public abstract int getStrokCluster();
+
+	public abstract double getAvgForce();
 }
