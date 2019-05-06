@@ -13,6 +13,8 @@ Application Architecture
 On overview of the navigation and controls inside the Smart Ink Tool
 application system
 
+[SmartInk Demo Video](https://www.youtube.com/watch?v=vL1ADAJ54no "Smart ink demo")
+
 Technology Used
 ---------------
 
