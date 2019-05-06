@@ -1,9 +1,4 @@
-![](media/image2.png){width="1.3178860454943133in"
-height="0.5943405511811024in"}
-
-Smart Ink Segmentation and Analysis
-
-
+# Smart Ink Segmentation and Analysis
 
 Timothy Truty
 
@@ -183,10 +178,6 @@ make the segmentation process easier for the user.:
 -  WriteCSV             Output a csv after strokes are segmented                             Models
 -  Login                Fxml file to create login vielw                                      Views
 -  Mainview             Fxml file to create main view and interactions in application        Views
-
-UML DIAGRAM
------------
-
 
 GUI MOCKUP EXPLAINED
 --------------------
