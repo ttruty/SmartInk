@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Users/KinectAcquisition2/Downloads/commons-io-2.6/commons-io-2.6.jar"/>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/KinectAcquisition2/Downloads/controlsfx-8.40.14.jar"/>
-	<classpathentry kind="lib" path="C:/Users/KinectAcquisition2/Downloads/mysql-connector-java-8.0.13/mysql-connector-java-8.0.13.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/controlsfx-8.40.14.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/mysql-connector.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/poi-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/poi-ooxml-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/poi-excelant-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/poi-ooxml-schemas-4.1.0.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -19,7 +19,9 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -37,6 +39,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
@@ -45,6 +48,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -61,6 +66,7 @@ import models.ReadData;
 import models.Stroke;
 import models.StrokeTableData;
 import models.WriteCSV;
+import models.WriteXLSX;
 
 /** Controls the main application screen */
 public class MainViewController {
@@ -86,6 +92,7 @@ public class MainViewController {
   @FXML private MenuBar fileMenuBar;
   @FXML private TabPane tableTabPane;
   @FXML private Pane drawPane;
+  @FXML private ScrollPane scrollPane;
   
   //table variables
   @FXML private TableView<StrokeTableData> strokeTable;
@@ -127,6 +134,11 @@ public class MainViewController {
   private Group lineGroup = new Group();
   private Group redLineGroup = new Group();
   private Group greenLineGroup = new Group();
+  
+  //zoom vars
+  private final DoubleProperty zoomProperty = new SimpleDoubleProperty(1.0d);
+  private final DoubleProperty deltaY = new SimpleDoubleProperty(0.0d);
+
 
   //map for holding clusters
   private Map<Integer, ArrayList<Stroke>> myMap = new HashMap<Integer, ArrayList<Stroke>>();
@@ -261,9 +273,12 @@ public class MainViewController {
 			 
 			 
 		 //write the data the CSV file for upload later
-		 WriteCSV writeCSV = new WriteCSV();
+		 //WriteCSV writeCSV = new WriteCSV();
+		 
+		 WriteXLSX writeXLSX = new WriteXLSX();
 		 try {
-			writeCSV.write(fileNameLabel.getText(), projIdTextField.getText(), saveData);
+			//writeCSV.write(userName, fileNameLabel.getText(), projIdTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
+			writeXLSX.write(userName, fileNameLabel.getText(), projIdTextField.getText(), fuTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			Alert alert = new Alert(AlertType.ERROR,
@@ -456,8 +471,23 @@ public class MainViewController {
 		drawPane.getChildren().clear();
 		lineGroup.getChildren().clear();
 		greenLineGroup.getChildren().clear();
-		redLineGroup.getChildren().clear();		
+		redLineGroup.getChildren().clear();	
+		
 		reset();
+		
+		PanAndZoomPane panAndZoomPane = new PanAndZoomPane();
+        zoomProperty.bind(panAndZoomPane.myScale);
+        deltaY.bind(panAndZoomPane.deltaY);
+        
+
+        SceneGestures sceneGestures = new SceneGestures(panAndZoomPane);
+
+        scrollPane.setContent(panAndZoomPane);
+        panAndZoomPane.toBack();
+        scrollPane.addEventFilter( MouseEvent.MOUSE_CLICKED, sceneGestures.getOnMouseClickedEventHandler());
+        scrollPane.addEventFilter( MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+        scrollPane.addEventFilter( MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+        scrollPane.addEventFilter( ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 		
 		ArrayList<Double> xMaxMinList = new ArrayList<>();
         ArrayList<Double> yMaxMinList = new ArrayList<>();
@@ -493,7 +523,10 @@ public class MainViewController {
             }
             
         }
+        
+        
      	drawPane.getChildren().add(lineGroup);
+     	panAndZoomPane.getChildren().add(drawPane);
 	}
 	
 	private void reset() {

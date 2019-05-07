@@ -2,7 +2,6 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import models.LoginModel;
 
 /** Controls the login screen */
 public class LoginController {
@@ -12,7 +11,6 @@ public class LoginController {
   @FXML private Button loginButton;
   @FXML private Label statusLabel;
   
-  private LoginModel model;
   private LoginManager manager;
  // public void initialize() {}
   

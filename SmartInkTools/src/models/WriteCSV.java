@@ -12,7 +12,7 @@ public class WriteCSV {
 	
 	//write file to csv for use with stats methods
 	
-    public void write(String file, String ProjId, ArrayList<Stroke> data) throws IOException {
+    public void write(String user, String file, String ProjId, String sentenceText, String deviationsText,  ArrayList<Stroke> data) throws IOException {
 
         String filename = FilenameUtils.removeExtension(file) + ".csv"; // returns "txt"
 
@@ -21,7 +21,7 @@ public class WriteCSV {
         final String NEW_LINE_SEPARATOR = "\n";
 
         //CSV file header
-        final String FILE_HEADER = "StrokeNumber, Label, startTime, stopTime, Duration, Length, Distance, Samples, thinkTime, avgForce, strokeSpeed";
+        final String FILE_HEADER = "StrokeNumber, Label, startTime, stopTime, Duration, Length, Distance, Samples, thinkTime, avgForce, strokeSpeed, BBCenterX, BBCenterY, MaxX, MaxY, MinX, MinY";
         System.out.println("Print to csv");
 
         //Sentence accumulators
@@ -57,9 +57,19 @@ public class WriteCSV {
             fileWriter.append(COMMA_DELIMITER);
             Date time = Date.from(Instant.ofEpochMilli(data.get(0).getStartOfStroke()));
             fileWriter.append(time.toString());
-
             fileWriter.append(NEW_LINE_SEPARATOR);
-
+            fileWriter.append("Scorer");
+            fileWriter.append(COMMA_DELIMITER);
+            fileWriter.append(user);
+            fileWriter.append(NEW_LINE_SEPARATOR);
+            fileWriter.append("Protocol Deviations");
+            fileWriter.append(COMMA_DELIMITER);
+            fileWriter.append(deviationsText);
+            fileWriter.append(NEW_LINE_SEPARATOR);
+            
+            
+            
+            fileWriter.append(NEW_LINE_SEPARATOR);
 
             fileWriter.append(FILE_HEADER.toString());
 
@@ -127,14 +137,41 @@ public class WriteCSV {
                     end = stroke.getEndOfStroke();
                 }
                 fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf(stroke.getAvgForce()));
+                fileWriter.append(String.valueOf(stroke.getAvgForce())); // FORCE
                 fileWriter.append(COMMA_DELIMITER);
-                fileWriter.append(String.valueOf((stroke.getDistance()/stroke.getStrokeDuration())));
+                fileWriter.append(String.valueOf((stroke.getDistance()/stroke.getStrokeDuration()))); //SPEED
+                
+                //BBCenter, MaxX, MinX, MaxY, MinY
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(stroke.getBBCenter().getX())); // Bounding Box center X
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(stroke.getBBCenter().getY())); // Bounding Box center X
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(stroke.getMaxXCoordinate().getX())); // Max X
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(stroke.getMaxYCoordinate().getY())); // Max Y
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(stroke.getMinXCoordinate().getX())); // Min X
+                fileWriter.append(COMMA_DELIMITER);
+                fileWriter.append(String.valueOf(stroke.getMinYCoordinate().getY())); // Min Y
+                fileWriter.append(COMMA_DELIMITER);
+                
                 fileWriter.append(NEW_LINE_SEPARATOR);
-                
-                
             strokeCounter++;   
-            }
+            }            
+            fileWriter.append(NEW_LINE_SEPARATOR);
+            fileWriter.append(NEW_LINE_SEPARATOR);
+            
+            fileWriter.append("Sentence Text:");
+            fileWriter.append(COMMA_DELIMITER);
+            fileWriter.append(sentenceText);
+            fileWriter.append(NEW_LINE_SEPARATOR);
+            
+            fileWriter.append("Words:");
+            String wordList = sentenceText.replaceAll(" ",","); // or "\\.", it doesn't matter...
+            fileWriter.append(COMMA_DELIMITER);
+            fileWriter.append(wordList);
+            fileWriter.append(NEW_LINE_SEPARATOR);
             
             fileWriter.append(NEW_LINE_SEPARATOR);
             fileWriter.append(NEW_LINE_SEPARATOR);

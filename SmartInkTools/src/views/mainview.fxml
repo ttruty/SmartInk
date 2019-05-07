@@ -23,7 +23,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="605.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainViewController">
+<AnchorPane prefHeight="605.0" prefWidth="1086.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainViewController">
    <children>
       <StackPane layoutY="25.0" prefHeight="596.0" prefWidth="919.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
         <children>
@@ -81,7 +81,7 @@
                   </GridPane>
                         <HBox prefHeight="489.0" prefWidth="1081.0">
                            <children>
-                              <ScrollPane prefHeight="489.0" prefWidth="711.0">
+                              <ScrollPane fx:id="scrollPane" prefHeight="489.0" prefWidth="711.0">
                                  <content>
                                     <AnchorPane fx:id="drawPane" />
                                  </content>

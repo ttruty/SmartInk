@@ -2,6 +2,7 @@ package models;
 
 
 import java.util.TreeSet;
+import java.awt.geom.Point2D;
 
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -43,4 +44,14 @@ public abstract class Stroke
     public abstract int getStrokCluster();
 
 	public abstract double getAvgForce();
+	
+	public abstract Point2D getBBCenter();
+	
+	public abstract Point2D getMaxXCoordinate();
+	
+	public abstract Point2D getMaxYCoordinate();
+
+	public abstract Point2D getMinXCoordinate();
+	
+	public abstract Point2D getMinYCoordinate();
 }
