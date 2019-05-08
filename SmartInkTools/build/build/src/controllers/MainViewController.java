@@ -139,6 +139,10 @@ public class MainViewController {
   //zoom vars
   private final DoubleProperty zoomProperty = new SimpleDoubleProperty(1.0d);
   private final DoubleProperty deltaY = new SimpleDoubleProperty(0.0d);
+  
+  //scoring vars
+  private int processedCount = 0;
+  private File focusDirectory;
 
 
   //map for holding clusters
@@ -280,9 +284,34 @@ public class MainViewController {
 			 //WriteCSV writeCSV = new WriteCSV();
 			 WriteXLSX writeXLSX = new WriteXLSX();
 			 try {
-				//writeCSV.write(userName, fileNameLabel.getText(), projIdTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
-				writeXLSX.write(userName, fileNameLabel.getText(), projIdTextField.getText(), fuTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
-			} catch (IOException e1) {
+				 //writeCSV.write(userName, fileNameLabel.getText(), projIdTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
+				 writeXLSX.write(userName, fileNameLabel.getText(), projIdTextField.getText(), fuTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
+				 focusDirectory = writeXLSX.getParentDirectory();
+		    	 ButtonType more = new ButtonType("Score More", ButtonBar.ButtonData.OK_DONE);
+		    	 ButtonType exit = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+		    	 Alert alert = new Alert(AlertType.WARNING,
+		    	         "Smart Ink Segment File Saved \n"
+		    	         + fileNameLabel.getText() + "\n"
+		    	         + "Score more or Exit?",
+		    	         more,
+		    	         exit);
+		
+		    	 alert.setTitle("File Saved");
+		    	 Optional<ButtonType> result = alert.showAndWait();
+		
+		    	 
+		    	 // exit is pressed
+		    	 if (result.orElse(more) == exit) {
+		    		 closeApp(e);
+		    	 }
+		    	 else { // more is pressed
+		    		 System.out.println("More Selected");
+		    		 pickAFile(e);
+		    		 
+		    	 }
+		    	 processedCount++; //inrement processed counter
+				
+			 } catch (IOException e1) {
 				// TODO Auto-generated catch block
 				Alert alert = new Alert(AlertType.ERROR,
 		    	         "File not saved due to File Error \n"
@@ -292,32 +321,7 @@ public class MainViewController {
 		    	 alert.setTitle("File Error");
 		    	 alert.showAndWait();
 				e1.printStackTrace();
-			} 
-			 
-			 
-			 
-	    	 ButtonType more = new ButtonType("Score More", ButtonBar.ButtonData.OK_DONE);
-	    	 ButtonType exit = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
-	    	 Alert alert = new Alert(AlertType.WARNING,
-	    	         "Smart Ink Segment File Saved \n"
-	    	         + fileNameLabel.getText() + "\n"
-	    	         + "Score more or Exit?",
-	    	         more,
-	    	         exit);
-	
-	    	 alert.setTitle("File Saved");
-	    	 Optional<ButtonType> result = alert.showAndWait();
-	
-	    	 
-	    	 // exit is pressed
-	    	 if (result.orElse(more) == exit) {
-	    		 closeApp(e);
-	    	 }
-	    	 else { // more is pressed
-	    		 System.out.println("More Selected");
-	    		 pickAFile(e);
-	    		 
-	    	 }   	  
+			}	  
 		 }
      }); // end save button listener
      
@@ -377,6 +381,9 @@ public class MainViewController {
 	  // select file from the menu bar
 	  Stage stage = (Stage) fileMenuBar.getScene().getWindow();
 	  FileChooser fileChooser = new FileChooser();
+	  if (processedCount != 0) {		  
+		  fileChooser.setInitialDirectory(focusDirectory);
+	  }
 	  fileChooser.setTitle("Open Resource File");
 	  //only be able to select text files
 	  FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");

@@ -28,6 +28,7 @@ public class WriteXLSX {
 	private static String[] columns = { "StrokeNumber", "Label", "startTime", "stopTime", "Duration", "Length", "Distance", "Samples", "thinkTime", "avgForce",
 			"strokeSpeed", "BBCenterX", "BBCenterY", "MaxX", "MaxY", "MinX", "MinY" };
 	private static String[] segHeader = { "StrokeNumber", "TimeStamp", "XCoordinate", "YCoordinate", "Force" };
+	private File FocusDirectory;
 	
 	@SuppressWarnings("resource")
 	public void write(String user, String file, String ProjId, String FuYear, String sentenceText, String deviationsText,  ArrayList<Stroke> data) throws IOException {
@@ -38,6 +39,7 @@ public class WriteXLSX {
     	
     	File fullFilePath = new File(file);
 		File parentDir = fullFilePath.getParentFile(); // to get the parent dir 
+		FocusDirectory = parentDir;
     	
     	String dirname = "/Scored";
     	String fullPath = FilenameUtils.getFullPathNoEndSeparator(file);
@@ -56,6 +58,8 @@ public class WriteXLSX {
 		Sheet scoreSheet = workbook.createSheet("Scored");
 		Sheet sentSheet = workbook.createSheet("Sentence");
 		Sheet pentSheet = workbook.createSheet("Pentagon");
+		Sheet raSheet = workbook.createSheet("RaData");
+		Sheet otherSheet = workbook.createSheet("Other");
 		
 		//inital metadata
 		Row idRow = scoreSheet.createRow(0);
@@ -91,6 +95,8 @@ public class WriteXLSX {
 	    int rowNum = 8;
 	    int sentRow = 0;
 	    int pentRow = 0;
+	    int raRow = 0;
+	    int otherRow = 0;
 	    
 	  //Write a new stroke object list to the CSV file
         long end = 0;
@@ -99,13 +105,19 @@ public class WriteXLSX {
         int pentStrokeCount = 1;
         
         Row headerRowS = sentSheet.createRow(sentRow++);
-        Row headerRowP = sentSheet.createRow(pentRow++);
+        Row headerRowP = pentSheet.createRow(pentRow++);
+        Row headerRowR = raSheet.createRow(raRow++);
+        Row headerRowO = otherSheet.createRow(otherRow++);
 
 	    for (int i = 0; i < segHeader.length; i++) {
 	      Cell cellS = headerRowS.createCell(i);
 	      Cell cellP = headerRowP.createCell(i);
+	      Cell cellR = headerRowR.createCell(i);
+	      Cell cellO = headerRowO.createCell(i);
 	      cellS.setCellValue(segHeader[i]);
 	      cellP.setCellValue(segHeader[i]);
+	      cellR.setCellValue(segHeader[i]);
+	      cellO.setCellValue(segHeader[i]);
 	    }
 		
         
@@ -138,7 +150,31 @@ public class WriteXLSX {
         				rowp.createCell(3).setCellValue(point.getY());
         				rowp.createCell(4).setCellValue(point.getForce());
         			}
-        			break;        	
+        			break;
+        		case "RA Data" :
+        			TreeSet<Point> pointListR = stroke.getPointsSet();
+        			
+        			for (Point point : pointListR) {
+        				Row rowr = raSheet.createRow(raRow++);
+        				rowr.createCell(0).setCellValue(strokeCounter);
+        				rowr.createCell(1).setCellValue(point.getTimeStamp());
+        				rowr.createCell(2).setCellValue(point.getX());
+        				rowr.createCell(3).setCellValue(point.getY());
+        				rowr.createCell(4).setCellValue(point.getForce());
+        			}
+        			break; 
+        		case "Other Data" :
+        			TreeSet<Point> pointListO = stroke.getPointsSet();
+        			
+        			for (Point point : pointListO) {
+        				Row rowo = otherSheet.createRow(otherRow++);
+        				rowo.createCell(0).setCellValue(strokeCounter);
+        				rowo.createCell(1).setCellValue(point.getTimeStamp());
+        				rowo.createCell(2).setCellValue(point.getX());
+        				rowo.createCell(3).setCellValue(point.getY());
+        				rowo.createCell(4).setCellValue(point.getForce());
+        			}
+        			break;
         	}
         	long thinkTime = 0;
         	
@@ -219,7 +255,7 @@ public class WriteXLSX {
     	return thinkTime;
     }
 	
-	public void MovingFile(File fileFullPath, File parentDir, String saveName) throws IOException {
+	private void MovingFile(File fileFullPath, File parentDir, String saveName) throws IOException {
 		String dirname = "/RAW_MMSE";
 		String dir = parentDir.toString().concat(dirname);
     	File directory = new File(dir);
@@ -230,4 +266,10 @@ public class WriteXLSX {
 	      FileUtils.getFile(fileFullPath), 
 	      FileUtils.getFile(dir + "/" + saveName));
 	}
+	
+	public File getParentDirectory() {
+		return FocusDirectory;
+		}
+	
+	
 }

@@ -147,7 +147,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="RADC"/>
 				<attribute name="Implementation-Title" value="SmartInkTool"/>
-				<attribute name="Implementation-Version" value="1.5"/>
+				<attribute name="Implementation-Version" value="1.6"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>
