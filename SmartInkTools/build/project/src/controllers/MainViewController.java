@@ -58,6 +58,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import models.CheckProjId;
 import models.Cluster;
 import models.ClusterTableData;
 import models.DBScan;
@@ -215,7 +216,8 @@ public class MainViewController {
 		 LinkedList<Stroke> data = this.getFinalStrokeData();
 		
 		 //user input errors
-		 if (!Pattern.matches("^\\d{8}$", projIdTextField.getText())) {
+		 //TODO: Set in valid project Id
+		 if (!validityCheck(projIdTextField.getText())) {
 			 Alert alert = new Alert(AlertType.WARNING,
 	    	         "Project ID Field is not valid \n"
 	    	         + "Please set correctly \n "
@@ -270,30 +272,30 @@ public class MainViewController {
 		 for (Stroke k : saveData) {
 			 System.out.println(k.toString());
 		 }
-			 
-			 
-		 //write the data the CSV file for upload later
-		 WriteCSV writeCSV = new WriteCSV();
-		 WriteXLSX writeXLSX = new WriteXLSX();
-		 try {
-			writeCSV.write(userName, fileNameLabel.getText(), projIdTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
-			writeXLSX.write(userName, fileNameLabel.getText(), projIdTextField.getText(), fuTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			Alert alert = new Alert(AlertType.ERROR,
-	    	         "File not saved due to File Error \n"
-	    	         + "Please make sure CSV file is not open \n "
-	    	         + "If error persists contact IT");
-	
-	    	 alert.setTitle("File Error");
-	    	 alert.showAndWait();
-			e1.printStackTrace();
-		} 
-		 
     	 
-		//alert for saving file
+		 //alert for saving file
 		 // option to load next file or quit
-		 if (saved != false) {			 
+		 if (saved != false) {
+			 //write the data the CSV file for upload later
+			 //WriteCSV writeCSV = new WriteCSV();
+			 WriteXLSX writeXLSX = new WriteXLSX();
+			 try {
+				//writeCSV.write(userName, fileNameLabel.getText(), projIdTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
+				writeXLSX.write(userName, fileNameLabel.getText(), projIdTextField.getText(), fuTextField.getText(), sentTextField.getText(), pdTextField.getText(), saveData);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				Alert alert = new Alert(AlertType.ERROR,
+		    	         "File not saved due to File Error \n"
+		    	         + "Please make sure CSV file is not open \n "
+		    	         + "If error persists contact IT");
+		
+		    	 alert.setTitle("File Error");
+		    	 alert.showAndWait();
+				e1.printStackTrace();
+			} 
+			 
+			 
+			 
 	    	 ButtonType more = new ButtonType("Score More", ButtonBar.ButtonData.OK_DONE);
 	    	 ButtonType exit = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
 	    	 Alert alert = new Alert(AlertType.WARNING,
@@ -792,4 +794,9 @@ public class MainViewController {
     public void setFinalStrokeData(LinkedList<Stroke> finalStrokeData) {
     	this.finalStrokeData = finalStrokeData;
     }
+    
+    private boolean validityCheck(String Id) {
+		CheckProjId checker = new CheckProjId();
+		return checker.isLegal(Id);
+	}
 }
