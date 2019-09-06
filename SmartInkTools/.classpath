@@ -7,17 +7,24 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/commons-io-2.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/controlsfx-8.40.14.jar"/>
-	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/mysql-connector.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/poi-4.1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/poi-ooxml-4.1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/poi-excelant-4.1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/requiredLibs/poi-ooxml-schemas-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/commons-compress-1.18.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/controlsfx-8.40.14.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/curvesapi-1.04.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/mysql-connector.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/poi-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/poi-excelant-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/poi-ooxml-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/poi-ooxml-schemas-4.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Documents/GitHub/SmartInk/SmartInkTools/build/dist/libs/SmartInkTools.jar"/>
+	<classpathentry kind="lib" path="C:/Users/KinectProcessing/Downloads/xmlbeans-bin-3.1.0/xmlbeans-3.1.0/lib/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

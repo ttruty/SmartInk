@@ -20,38 +20,73 @@
 		<mkdir dir="externalLibs" />
 	
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\requiredLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
 				<filename name="commons-io-2.6.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\requiredLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
+				<filename name="mysql-connector.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
 				<filename name="poi-4.1.0.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\requiredLibs">
-				<filename name="poi-ooxml-schemas-4.1.0.jar"/>
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
+				<filename name="commons-compress-1.18.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\requiredLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
+				<filename name="stax-api-1.0.1.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
 				<filename name="controlsfx-8.40.14.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\requiredLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
+				<filename name="SmartInkTools.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\KinectProcessing\Downloads\xmlbeans-bin-3.1.0\xmlbeans-3.1.0\lib">
+				<filename name="xmlbeans-3.1.0.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
+				<filename name="commons-collections4-4.1.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
 				<filename name="poi-ooxml-4.1.0.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\requiredLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
+				<filename name="commons-codec-1.10.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
 				<filename name="poi-excelant-4.1.0.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\requiredLibs">
-				<filename name="mysql-connector.jar"/>
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
+				<filename name="curvesapi-1.04.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\KinectProcessing\Documents\GitHub\SmartInk\SmartInkTools\build\dist\libs">
+				<filename name="poi-ooxml-schemas-4.1.0.jar"/>
 			</fileset>
 		</copy>
 	
@@ -74,12 +109,19 @@
 		<copy todir="build/libs">
 			<fileset dir="externalLibs">
 				<include name="poi-excelant-4.1.0.jar"/>
+				<include name="commons-codec-1.10.jar"/>
+				<include name="xmlbeans-3.1.0.jar"/>
+				<include name="stax-api-1.0.1.jar"/>
+				<include name="controlsfx-8.40.14.jar"/>
+				<include name="poi-ooxml-4.1.0.jar"/>
 				<include name="commons-io-2.6.jar"/>
 				<include name="poi-4.1.0.jar"/>
 				<include name="poi-ooxml-schemas-4.1.0.jar"/>
-				<include name="controlsfx-8.40.14.jar"/>
-				<include name="poi-ooxml-4.1.0.jar"/>
+				<include name="commons-compress-1.18.jar"/>
+				<include name="commons-collections4-4.1.jar"/>
 				<include name="mysql-connector.jar"/>
+				<include name="curvesapi-1.04.jar"/>
+				<include name="SmartInkTools.jar"/>
 			</fileset>
 		</copy>
 	
@@ -147,7 +189,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="RADC"/>
 				<attribute name="Implementation-Title" value="SmartInkTool"/>
-				<attribute name="Implementation-Version" value="1.6"/>
+				<attribute name="Implementation-Version" value="1.7"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>

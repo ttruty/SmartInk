@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="SmartInkTools.jnlp">
+  <information>
+    <title>SmartInkTools</title>
+    <vendor>RADC</vendor>
+    <description>SmartInkTool</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="SmartInkTools.jar" size="43937" download="eager" />
+    <jar href="libs\SmartInkTools.jar" size="43937" download="eager" />
+    <jar href="libs\commons-codec-1.10.jar" size="284184" download="eager" />
+    <jar href="libs\commons-collections4-4.1.jar" size="751238" download="eager" />
+    <jar href="libs\commons-compress-1.18.jar" size="591748" download="eager" />
+    <jar href="libs\commons-io-2.6.jar" size="214788" download="eager" />
+    <jar href="libs\controlsfx-8.40.14.jar" size="1215643" download="eager" />
+    <jar href="libs\curvesapi-1.04.jar" size="98365" download="eager" />
+    <jar href="libs\mysql-connector.jar" size="540852" download="eager" />
+    <jar href="libs\poi-3.17.jar" size="2701171" download="eager" />
+    <jar href="libs\poi-4.1.0.jar" size="2754042" download="eager" />
+    <jar href="libs\poi-excelant-4.1.0.jar" size="31377" download="eager" />
+    <jar href="libs\poi-ooxml-3.17.jar" size="1479023" download="eager" />
+    <jar href="libs\poi-ooxml-4.1.0.jar" size="1793185" download="eager" />
+    <jar href="libs\poi-ooxml-schemas-3.17.jar" size="5924600" download="eager" />
+    <jar href="libs\poi-ooxml-schemas-4.1.0.jar" size="7784293" download="eager" />
+    <jar href="libs\stax-api-1.0.1.jar" size="26514" download="eager" />
+    <jar href="libs\xmlbeans-2.6.0.jar" size="2730866" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="0" height="0" main-class="controllers.Main"  name="SmartInkTool" />
+  <update check="background"/>
+</jnlp>
